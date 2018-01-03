@@ -1,0 +1,7 @@
+[package]
+authors = ["kmein <kieran.meinhardt@gmail.com>"]
+name = "ngrsm"
+version = "0.1.0"
+[dependencies]
+clap = "*"
+ngrams = "1.0.1"
