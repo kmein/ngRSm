@@ -21,7 +21,7 @@ fn main() {
         .version("0.1.0")
         .author("Kierán Meinhardt <kieran.meinhardt@gmail.com>")
         .about("Reads in text from stdin and creates n-gram statistics.")
-        .arg_from_usage("[size] 'Specify the length of the n-grams to analyse ")
+        .arg_from_usage("[size] 'Specify the length of the n-grams to analyse'")
         .get_matches();
     let ngram_size = clap::value_t!(matches.value_of("size"), usize).unwrap_or(3);
 
