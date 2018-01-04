@@ -38,10 +38,10 @@ fn main() {
     }
 
     let words = input.split_whitespace();
-    let statistics = match ngram_size {
-        1 => sort_by_value_rev(histogram(words.into_iter().map(|x| vec![x]))),
-        _ => sort_by_value_rev(histogram(words.ngrams(ngram_size))),
-    };
+    let statistics = sort_by_value_rev(match ngram_size {
+        1 => histogram(words.into_iter().map(|x| vec![x])),
+        _ => histogram(words.ngrams(ngram_size)),
+    });
 
     for (k, v) in match ngram_count {
         None => statistics,
