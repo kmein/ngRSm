@@ -10,15 +10,18 @@ use std::io::{stdin, Read};
 
 fn main() {
     let matches = clap::App::new("ngRSm")
-        .version("0.2.0")
+        .version("0.3.0")
         .author("Kierán Meinhardt <kieran.meinhardt@gmail.com>")
         .about("Reads in text from a file and creates n-gram statistics.")
+        .arg_from_usage("<size> -s --size=<N> 'Specify the length of the n-grams to analyse'")
+        .arg_from_usage("[file] -f --file=<FILE> 'Specify the file to read from (default stdin)'")
         .arg_from_usage(
-            "[size] -s --size=<N> 'Specify the length of the n-grams to analyse (default 3)'",
+            "[count] -c --count=<N> 'Specify the amount of n-grams to display (default all)'",
         )
         .arg_from_usage("[file] -f --file=<FILE> 'Specify the file to read from (default stdin)'")
         .get_matches();
-    let ngram_size = clap::value_t!(matches.value_of("size"), usize).unwrap_or(3);
+    let ngram_size = clap::value_t!(matches.value_of("size"), usize).unwrap_or(1);
+    let ngram_count = clap::value_t!(matches.value_of("count"), usize).ok();
 
     let mut input = String::new();
     match matches.value_of("file") {
@@ -37,7 +40,10 @@ fn main() {
         _ => sort_by_value_rev(histogram(words.ngrams(ngram_size))),
     };
 
-    for (k, v) in ngrsm::sort_by_value_rev(ngrsm::histogram(ngrams)) {
-        println!("{}\t{}", v, k.join(" "));
+    for (k, v) in match ngram_count {
+        None => statistics,
+        Some(c) => statistics.into_iter().take(c).collect(),
+    } {
+        println!("{:>6} {}", v, k.join(" "));
     }
 }

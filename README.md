@@ -2,10 +2,10 @@
 *N-gram analysis in Rust*
 
 ## Example (Homer's *Iliad*)
-The following command finds out the most frequent four-grams in the entire corpus of Homer's *Iliad*.
+The following command finds out the 20 most frequent four-grams in the entire corpus of Homer's *Iliad*.
 
 ```
-$ cargo run -- 4 < iliad.txt | head -n +20
+$ cargo run -- --size=4 --file=iliad.txt --count=20
 25      ὣς ἔφαθ᾽, οἳ δ᾽ ἄρα
 16      ἔπος τ᾽ ἔφατ᾽ ἔκ τ᾽
 15      καί μιν φωνήσας ἔπεα πτερόεντα
