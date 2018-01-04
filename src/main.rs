@@ -4,6 +4,7 @@ extern crate ngrams;
 extern crate ngrsm;
 
 use ngrams::Ngram;
+use ngrsm::*;
 use std::fs::File;
 use std::io::{stdin, Read};
 
@@ -30,7 +31,11 @@ fn main() {
             .expect("Could not read from stdin."),
     };
 
-    let ngrams = input.split_whitespace().ngrams(ngram_size);
+    let words = input.split_whitespace();
+    let statistics = match ngram_size {
+        1 => sort_by_value_rev(histogram(words.into_iter().map(|x| vec![x]))),
+        _ => sort_by_value_rev(histogram(words.ngrams(ngram_size))),
+    };
 
     for (k, v) in ngrsm::sort_by_value_rev(ngrsm::histogram(ngrams)) {
         println!("{}\t{}", v, k.join(" "));
