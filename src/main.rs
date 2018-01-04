@@ -38,3 +38,16 @@ fn main() {
         println!("{}\t{}", v, k.join(" "));
     }
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn test_histogram() {
+        let statistics = ::histogram(&[1, 2, 3, 4, 1, 1, 2]);
+        assert_eq!(statistics.get(&1), Some(&3));
+        assert_eq!(statistics.get(&2), Some(&2));
+        assert_eq!(statistics.get(&3), Some(&1));
+        assert_eq!(statistics.get(&4), Some(&1));
+        assert_eq!(statistics.get(&5), None);
+    }
+}
