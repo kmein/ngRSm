@@ -5,6 +5,7 @@ extern crate ngrams;
 
 use ngrams::Ngram;
 use std::collections::hash_map::HashMap;
+use std::fs::File;
 use std::hash::Hash;
 use std::io::{stdin, Read};
 
@@ -24,17 +25,26 @@ fn sort_by_value_rev<C: IntoIterator<Item = (K, V)>, K, V: Ord>(hash_map: C) -> 
 
 fn main() {
     let matches = clap::App::new("ngRSm")
-        .version("0.1.1")
+        .version("0.2.0")
         .author("Kierán Meinhardt <kieran.meinhardt@gmail.com>")
-        .about("Reads in text from stdin and creates n-gram statistics.")
-        .arg_from_usage("[size] 'Specify the length of the n-grams to analyse'")
+        .about("Reads in text from a file and creates n-gram statistics.")
+        .arg_from_usage(
+            "[size] -s --size=<N> 'Specify the length of the n-grams to analyse (default 3)'",
+        )
+        .arg_from_usage("[file] -f --file=<FILE> 'Specify the file to read from (default stdin)'")
         .get_matches();
     let ngram_size = clap::value_t!(matches.value_of("size"), usize).unwrap_or(3);
 
     let mut input = String::new();
-    stdin()
-        .read_to_string(&mut input)
-        .expect("Could not read from stdin.");
+    match matches.value_of("file") {
+        Some(path) => File::open(path)
+            .expect("File not found.")
+            .read_to_string(&mut input)
+            .expect("Could not read from file."),
+        None => stdin()
+            .read_to_string(&mut input)
+            .expect("Could not read from stdin."),
+    };
 
     let ngrams = input.split_whitespace().ngrams(ngram_size);
 
