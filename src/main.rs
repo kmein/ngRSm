@@ -18,7 +18,7 @@ fn main() {
         .arg_from_usage(
             "[count] -c --count=<N> 'Specify the amount of n-grams to display (default all)'",
         )
-        .arg_from_usage("[file] -f --file=<FILE> 'Specify the file to read from (default stdin)'")
+        .arg_from_usage("[normalise] -n --normalise 'Treat all characters as lower case'")
         .get_matches();
     let ngram_size = clap::value_t!(matches.value_of("size"), usize).unwrap_or(1);
     let ngram_count = clap::value_t!(matches.value_of("count"), usize).ok();
@@ -33,6 +33,9 @@ fn main() {
             .read_to_string(&mut input)
             .expect("Could not read from stdin."),
     };
+    if matches.is_present("normalise") {
+        input = input.to_lowercase();
+    }
 
     let words = input.split_whitespace();
     let statistics = match ngram_size {
