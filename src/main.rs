@@ -16,6 +16,12 @@ fn histogram<C: IntoIterator<Item = T>, T: Eq + Hash>(collection: C) -> HashMap<
     result
 }
 
+fn sort_by_value_rev<C: IntoIterator<Item = (K, V)>, K, V: Ord>(hash_map: C) -> Vec<(K, V)> {
+    let mut entries: Vec<(K, V)> = hash_map.into_iter().collect();
+    entries.sort_by(|&(_, ref v0), &(_, ref v1)| v0.cmp(&v1).reverse());
+    entries
+}
+
 fn main() {
     let matches = clap::App::new("ngRSm")
         .version("0.1.1")
@@ -26,15 +32,13 @@ fn main() {
     let ngram_size = clap::value_t!(matches.value_of("size"), usize).unwrap_or(3);
 
     let mut input = String::new();
-    stdin().read_to_string(&mut input).expect("Could not read from stdin.");
+    stdin()
+        .read_to_string(&mut input)
+        .expect("Could not read from stdin.");
 
     let ngrams = input.split_whitespace().ngrams(ngram_size);
-    let statistics = histogram(ngrams);
-    let mut entries: Vec<(Vec<&str>, usize)> = statistics.into_iter().collect();
 
-    entries.sort_by(|&(_, v0), &(_, v1)| v0.cmp(&v1).reverse());
-
-    for (k, v) in entries {
+    for (k, v) in sort_by_value_rev(histogram(ngrams)) {
         println!("{}\t{}", v, k.join(" "));
     }
 }
