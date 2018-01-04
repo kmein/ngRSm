@@ -18,7 +18,7 @@ fn histogram<C: IntoIterator<Item = T>, T: Eq + Hash>(collection: C) -> HashMap<
 
 fn sort_by_value_rev<C: IntoIterator<Item = (K, V)>, K, V: Ord>(hash_map: C) -> Vec<(K, V)> {
     let mut entries: Vec<(K, V)> = hash_map.into_iter().collect();
-    entries.sort_by(|&(_, ref v0), &(_, ref v1)| v0.cmp(&v1).reverse());
+    entries.sort_by(|&(_, ref v0), &(_, ref v1)| v0.cmp(v1).reverse());
     entries
 }
 
