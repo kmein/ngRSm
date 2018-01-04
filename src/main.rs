@@ -45,13 +45,33 @@ fn main() {
 
 #[cfg(test)]
 mod tests {
+    use std::collections::HashMap;
+
     #[test]
     fn test_histogram() {
+        assert!(::histogram(&[] as &[i32]).is_empty());
+
         let statistics = ::histogram(&[1, 2, 3, 4, 1, 1, 2]);
         assert_eq!(statistics.get(&1), Some(&3));
         assert_eq!(statistics.get(&2), Some(&2));
         assert_eq!(statistics.get(&3), Some(&1));
         assert_eq!(statistics.get(&4), Some(&1));
         assert_eq!(statistics.get(&5), None);
+    }
+
+    #[test]
+    fn test_sort_by_value_ref() {
+        assert!(::sort_by_value_rev(HashMap::new() as HashMap<i32, i32>).is_empty());
+
+        // example from <https://doc.rust-lang.org/std/collections/hash_map/struct.HashMap.html>
+        let timber_resources: HashMap<&str, i32> =
+            [("Iceland", 10), ("Norway", 100), ("Denmark", 50)]
+                .iter()
+                .cloned()
+                .collect();
+        assert_eq!(
+            ::sort_by_value_rev(timber_resources),
+            vec![("Norway", 100), ("Denmark", 50), ("Iceland", 10)]
+        );
     }
 }
