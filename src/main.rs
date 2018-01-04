@@ -18,7 +18,7 @@ fn histogram<C: IntoIterator<Item = T>, T: Eq + Hash>(collection: C) -> HashMap<
 
 fn main() {
     let matches = clap::App::new("ngRSm")
-        .version("0.1.0")
+        .version("0.1.1")
         .author("Kierán Meinhardt <kieran.meinhardt@gmail.com>")
         .about("Reads in text from stdin and creates n-gram statistics.")
         .arg_from_usage("[size] 'Specify the length of the n-grams to analyse'")
@@ -26,7 +26,7 @@ fn main() {
     let ngram_size = clap::value_t!(matches.value_of("size"), usize).unwrap_or(3);
 
     let mut input = String::new();
-    stdin().read_to_string(&mut input).unwrap();
+    stdin().read_to_string(&mut input).expect("Could not read from stdin.");
 
     let ngrams = input.split_whitespace().ngrams(ngram_size);
     let statistics = histogram(ngrams);
