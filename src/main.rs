@@ -30,6 +30,7 @@ fn main() {
             .read_to_string(&mut input),
         None => stdin().read_to_string(&mut input),
     }.expect("Could not read input.");
+
     if matches.is_present("normalise") {
         input = input.to_lowercase();
     }
