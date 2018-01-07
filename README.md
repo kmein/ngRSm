@@ -1,4 +1,4 @@
-# ngRSm [![Build Status](https://travis-ci.org/kmein/ngRSm.svg?branch=master)](https://travis-ci.org/kmein/ngRSm)
+# ngRSm /ˈɛngræzm̩/ [![Build Status](https://travis-ci.org/kmein/ngRSm.svg?branch=master)](https://travis-ci.org/kmein/ngRSm)
 *N-gram analysis in Rust*
 
 ## Example (Homer's *Iliad*)
