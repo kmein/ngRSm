@@ -27,12 +27,9 @@ fn main() {
     match matches.value_of("file") {
         Some(path) => File::open(path)
             .expect("File not found.")
-            .read_to_string(&mut input)
-            .expect("Could not read from file."),
-        None => stdin()
-            .read_to_string(&mut input)
-            .expect("Could not read from stdin."),
-    };
+            .read_to_string(&mut input),
+        None => stdin().read_to_string(&mut input),
+    }.expect("Could not read input.");
     if matches.is_present("normalise") {
         input = input.to_lowercase();
     }
