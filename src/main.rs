@@ -14,10 +14,10 @@ fn main() {
         .author("Kierán Meinhardt <kieran.meinhardt@gmail.com>")
         .about("Reads in text from a file and creates n-gram statistics.")
         .arg_from_usage("<size> -s --size=<N> 'Specify the length of the n-grams to analyse'")
-        .arg_from_usage("[file] -f --file=<FILE> 'Specify the file to read from (default stdin)'")
         .arg_from_usage(
             "[count] -c --count=<N> 'Specify the amount of n-grams to display (default all)'",
         )
+        .arg_from_usage("[file] -f --file=<FILE> 'Specify the file to read from (default stdin)'")
         .arg_from_usage("[normalise] -n --normalise 'Treat all characters as lower case'")
         .get_matches();
     let ngram_size = clap::value_t!(matches.value_of("size"), usize).unwrap_or(1);
